@@ -27,7 +27,7 @@ func main() {
 	b = 10
 	d := genRans()
 	fmt.Println(d)
-	// @forall: d $ _el <= 20
+	// @forall: d $ _el <= 20;
 
 	c := a + b
 	fmt.Printf("c is: %v, type is: %T\n", c, c)
