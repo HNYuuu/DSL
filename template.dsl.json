@@ -11,7 +11,7 @@
         ]
     },
     {
-        "scope": ".*func.*",
+        "scope": ".*int_add.*",
         "regex": true,
         "watch": [
             "b"
@@ -43,14 +43,14 @@
         ]
     },
     {
-        "scope": "may-vul",
+        "scope": "signed_int_add",
         "check": [
             "integer-overflow",
             "divzero"
         ]
     },
     {
-        "scope": "may-vul",
+        "scope": "signed_int_add_restricted_invalid",
         "watch_op": "add",
         "watch": [
             "var1",

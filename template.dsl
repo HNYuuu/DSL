@@ -4,7 +4,7 @@ watch: [a, c]
 assume: [a >= 1, c < 10]
 
 @dsl-rule
-scope: .*func.*
+scope: .*int_add.*
 regex: True
 watch: [b]
 ensure: [b < 100]
@@ -21,11 +21,11 @@ watch: [iterates]
 require: [iter(iterates) != 5]
 
 @dsl-rule
-scope: may-vul
+scope: signed_int_add
 check: [integer-overflow, divzero]
 
 @dsl-rule
-scope: may-vul
+scope: signed_int_add_restricted_invalid
 watch_op: add
 watch: [var1, var2]
 require: [var1 + var2 >= var1 and var1 + var2 >= var2]
