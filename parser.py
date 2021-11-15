@@ -7,7 +7,6 @@ KEYWORDS = ['scope', 'regex', 'nesting', 'watch_op', 'watch',
 
 
 def read_file(file_path):
-    file_path = path.join('.', file_path)
     assert path.exists(file_path), f"File {file_path} does not exist"
 
     with open(file_path) as fp:
