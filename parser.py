@@ -27,8 +27,10 @@ def formatting_v(k, v):
     # if k is `regex`, the v should be a bool
     if k == 'regex':
         v = eval(v)
-    # if k is `watch` or `strategy` or `check`, the v should be a string list
-    if k == 'watch' or k == 'strategy' or k == 'check':
+    # if k is in need_string_list_keywords, the v should be a string list
+    need_string_list_keywords = {
+        'watch', 'strategy', 'check', 'assume', 'ensure', 'require'}
+    if k in need_string_list_keywords:
         v = v[1:-1]  # remove [ and ]
         v = v.split(',')
         v = [i.strip() for i in v]
@@ -53,7 +55,7 @@ def check_predicate(one_rule):
         except KeyError:
             exit("Please ensure each dsl has `watch`ed variables")
 
-        def clean_env(watched_vars, pred):
+        def clean_env(watched_vars, preds):
             valid_predicate = True
             # iter is a keyword, we have to override it
             def iter(x): pass
@@ -61,13 +63,15 @@ def check_predicate(one_rule):
             for watched_var in watched_vars:
                 exec(watched_var + "= 1")
             try:
-                eval(pred)
+                for pred in preds:
+                    eval(pred)
             except NameError:
                 # if the name is not declared, i.e., not watched
                 valid_predicate = False
             return valid_predicate
 
-        return clean_env(watched_vars, one_rule[list(the_predicate)[0]])
+        preds = one_rule[list(the_predicate)[0]]
+        return clean_env(watched_vars, preds)
     else:
         # if there is no predicate, always valid predicate
         return True
