@@ -1,36 +1,46 @@
 [
     {
-        "scope": "func",
+        "scope": "signed_int_add",
         "watch": [
-            "a",
-            "c"
+            "flag"
         ],
         "assume": [
-            "a >= 1",
-            "c < 10"
+            "flag >= 10"
         ]
     },
     {
         "scope": ".*int_add.*",
         "regex": true,
         "watch": [
-            "b"
+            "c"
         ],
         "ensure": [
-            "b < 100"
+            "c <= 2147483647"
         ]
     },
     {
-        "scope": "func",
+        "scope": "test_nesting",
         "nesting": [
             0
         ],
         "watch": [
-            "var0",
-            "var1"
+            "b"
         ],
         "require": [
-            "var0 >= var1"
+            "b < 6"
+        ]
+    },
+    {
+        "scope": "test_nesting",
+        "nesting": [
+            4,
+            1
+        ],
+        "watch": [
+            "d"
+        ],
+        "require": [
+            "d < 100"
         ]
     },
     {
@@ -43,14 +53,13 @@
         ]
     },
     {
-        "scope": "signed_int_add",
+        "scope": "div_zero_vul",
         "check": [
-            "integer-overflow",
             "divzero"
         ]
     },
     {
-        "scope": "signed_int_add_restricted_invalid",
+        "scope": "test_watch_op",
         "watch_op": "add",
         "watch": [
             "var1",
