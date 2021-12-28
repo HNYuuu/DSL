@@ -1,4 +1,5 @@
 import re
+import argparse
 
 PRE_DEFINED_PATTERN = """if !(%s) {
     panic("against: %s")
@@ -11,14 +12,8 @@ PRE_DEFINED_FORALL_PATTERN = """for _, %s := range %s {
 }"""
 
 
-def read_dsl_code():
-    with open('./overflow-sample/dsl-overflow.go') as fp:
-        dsl_go = fp.read()
-    return dsl_go
-
-
-def write_parsed_go(code):
-    with open("./overflow-sample/dsl-overflow-parsed.go", 'w') as fp:
+def write_parsed_go(path, code):
+    with open(path, 'w') as fp:
         fp.write(code)
 
 
@@ -88,9 +83,24 @@ def parse(code):
 
 
 def main():
-    dsl_go = read_dsl_code()
+    parser = argparse.ArgumentParser(
+        description='DSL Parser')
+    inputs = parser.add_argument_group('Input arguments')
+    inputs.add_argument('-f', '--file',
+                        type=argparse.FileType('r'),
+                        help='file path of to be parsed file')
+    args = parser.parse_args()
+
+    if not args.file:
+        exit("Please input path of the to be parsed file")
+
+    dsl_go = args.file.read()
     parsed_go = parse(dsl_go)
-    write_parsed_go(parsed_go)
+
+    # append a `parsed` before extension name
+    target_path = args.file.name[:args.file.name.rfind(
+        '.')] + '-parsed' + args.file.name[args.file.name.rfind('.'):]
+    write_parsed_go(target_path, parsed_go)
     print('[!] Done!')
 
 
